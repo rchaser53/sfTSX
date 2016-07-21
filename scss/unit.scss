@@ -1,0 +1,12 @@
+.unit{
+	display:block;
+	width:150px;
+	height:30px;
+	background-color:#CCC;
+	border:solid 5px #CCC;
+	margin-bottom:10px;
+
+	&.active{
+		border:solid 5px red;
+	}
+}

@@ -1,0 +1,15 @@
+@import "./variable.scss";
+
+html,body{
+	@extend %widthHeightHundred;
+}
+
+#redux-app{
+	@extend %widthHeightHundred;
+	display:block;
+}
+
+.divAppWrapper{
+	@extend %widthHeightHundred;
+	display:flex;
+}
