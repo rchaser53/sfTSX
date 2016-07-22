@@ -37,10 +37,6 @@ app.get('/', function(req, res) {
   res.send('JSforce AJAX Proxy');
 });
 
-app.get('*', function response(req, res) {
-  res.sendFile(path.join(__dirname, 'workplace/index.html'));
-});
-
 app.listen(port, 'localhost', function onStart(err) {
   if (err) {
     console.log(err);
