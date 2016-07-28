@@ -1,4 +1,5 @@
 import * as React from 'react';
+const jsforce = require('jsforce');
 
 interface State{
 	condition:string;
@@ -40,6 +41,32 @@ export class SideBar<S,T> extends React.Component<Props, State>{
 									addUnit(condition);
 								}}>add</button>
 								<button onClick={deleteUnit}>delete</button>
+							</div>
+
+							<div>
+								<button onClick={()=>{
+									try{
+										const conn = new jsforce.Connection({
+															instanceUrl: 'salesforce組織のURL',
+															proxyUrl: 'http://localhost:3000/proxy'
+														});
+
+										conn.login('salesforceのログインアカウント', 'パスワード', (err, res)=>{
+											if (err){
+												return console.error(err);
+											}
+
+											conn.query(`SELECT Id, Name FROM Account`, function(err, res) {
+												if (err){
+													return console.error(err);
+												}
+												console.log(res);
+											});
+										});
+									} catch (error){
+										console.log(error);
+									}
+								}}>login salesforce</button>
 							</div>
 
 						</div>
