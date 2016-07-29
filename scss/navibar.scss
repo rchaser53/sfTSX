@@ -1,0 +1,9 @@
+@import "./variable.scss";
+
+.divNavibar{
+	display:block;
+	width:500px;
+	height:50px;
+	background-color:#AAA;
+	transition:background-color 1.0S;
+}
