@@ -42,7 +42,22 @@ interface Props{
 	deleteUnit:Function;
 }
 
-export class App<S,T> extends React.Component<Props, {}>{
+interface State{
+	naviBarColor:string;
+}
+
+export class App<S,T> extends React.Component<Props, State>{
+	navibar:any;
+
+	constructor(){
+		super();
+		this.state = {
+			naviBarColor:"#AAA"
+		}
+	}
+	componentDidUpdate(){
+		this.navibar.style.backgroundColor = this.state.naviBarColor;
+	}
 	makeUnitArray():JSX.Element[]{
 		const { unit,activateUnit,activeUnit } = this.props;
 
@@ -53,20 +68,31 @@ export class App<S,T> extends React.Component<Props, {}>{
 							activateUnit={()=>{ activateUnit(id); }} />);
 		})
 	}
-
 	render(){
 		const { addUnit,deleteUnit,activateUnit,activeUnit } = this.props;
 
 		return (<div className="divAppWrapper">
-					<SideBar addUnit={addUnit} deleteUnit={()=>{
-						deleteUnit(activeUnit);
-					}}/>
-					<div>
-						{
-							this.makeUnitArray()
-						}
+					<div className="divNavibar" ref={(elem)=>{
+						this.navibar = elem;
+					}}>
+						<input onChange={(event:any)=>{
+								this.setState({
+									naviBarColor:event.target.value
+								});
+						}} />
+					</div>
+					<div className="divAppArea">
+						<SideBar addUnit={addUnit} deleteUnit={()=>{
+							deleteUnit(activeUnit);
+						}}/>
+						<div>
+							{
+								this.makeUnitArray()
+							}
+						</div>
 					</div>
 				</div>);
 	}
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);
