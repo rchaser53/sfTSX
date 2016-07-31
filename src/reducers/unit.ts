@@ -1,4 +1,5 @@
 import * as immutable from 'immutable';
+import { unit as Types } from '../actions/unit';
 
 const initialState = {
 };
@@ -6,7 +7,7 @@ const initialState = {
 const unit = (state = initialState, action) =>{
     let tempState,id,text;
     switch(action.type){
-    	case "ADD_UNIT":
+    	case Types.ADD_UNIT:
     		// objectをdeep copyする(値が同じだが違うobjectを作成する)
     		tempState = immutable.fromJS(state).toJS();
 
@@ -17,7 +18,7 @@ const unit = (state = initialState, action) =>{
                 id,text
             };
     		return tempState;
-        case "DELETE_UNIT":
+        case Types.DELETE_UNIT:
             // objectをdeep copyする(値が同じだが違うobjectを作成する)
             tempState = immutable.fromJS(state).toJS();
             id = action.payload.id;

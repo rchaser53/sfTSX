@@ -1,6 +1,11 @@
+export enum unit {
+	ADD_UNIT,
+	DELETE_UNIT
+}
+
 export const addUnit = (text:string)=>{
 	return {
-		type:"ADD_UNIT",
+		type:unit.ADD_UNIT,
 		payload:{
 			id:`id_${Date.now()}`,
 			text
@@ -10,7 +15,7 @@ export const addUnit = (text:string)=>{
 
 export const deleteUnit = (id:string)=>{
 	return {
-		type:"DELETE_UNIT",
+		type:unit.DELETE_UNIT,
 		payload:{
 			id
 		}
