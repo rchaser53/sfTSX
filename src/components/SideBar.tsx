@@ -8,6 +8,7 @@ interface State{
 interface Props{
 	addUnit:Function;
 	deleteUnit:Function;
+	changeThemeColor:(x:string)=>void;
 }
 
 export class SideBar<S,T> extends React.Component<Props, State>{
@@ -24,7 +25,7 @@ export class SideBar<S,T> extends React.Component<Props, State>{
 		} = this.state;
 
 		const {
-			addUnit,deleteUnit
+			addUnit,deleteUnit,changeThemeColor
 		} = this.props;
 
 		return (<div className="sideBarOuter">
@@ -67,8 +68,17 @@ export class SideBar<S,T> extends React.Component<Props, State>{
 										console.log(error);
 									}
 								}}>login salesforce</button>
-							</div>
 
+								<div>
+									<div>
+										Theme Color
+									</div>
+									<input onChange={(event:any)=>{
+										changeThemeColor(event.target.value);
+									}} />
+								</div>
+
+							</div>
 						</div>
 					</div>
 				</div>);

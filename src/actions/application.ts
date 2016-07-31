@@ -12,7 +12,7 @@ export const activateUnit = (id:string)=>{
 	}
 };
 
-export const navibar = (themeColor:string)=>{
+export const changeThemeColor = (themeColor:string)=>{
 	return {
 		type:application.CHANGE_THEME_COLOR,
 		payload:{

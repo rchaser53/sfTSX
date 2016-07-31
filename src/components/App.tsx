@@ -8,16 +8,19 @@ import {
 } from '../actions/unit';
 
 import {
-	activateUnit
+	activateUnit,
+	changeThemeColor
 } from '../actions/application';
 
 import SideBar from './SideBar';
 import Unit from './Unit';
+import Navibar from './Navibar';
 
 const mapStateToProps = (state)=>{
 	return {
 		unit : state.unit,
-		activeUnit : state.application.activeUnit
+		activeUnit : state.application.activeUnit,
+		themeColor: state.application.themeColor
 	};
 }
 
@@ -27,7 +30,8 @@ const mapDispatchToProps = (dispatch)=>{
 	return bindActionCreators({
 		addUnit,
 		deleteUnit,
-		activateUnit
+		activateUnit,
+		changeThemeColor
 	},dispatch);
 }
 
@@ -37,27 +41,14 @@ interface Props{
 		text:string;
 	}};
 	activeUnit:string;
+	themeColor:string;
 	addUnit:Function;
 	activateUnit:Function;
 	deleteUnit:Function;
+	changeThemeColor:(x:string)=>void;
 }
 
-interface State{
-	naviBarColor:string;
-}
-
-export class App<S,T> extends React.Component<Props, State>{
-	navibar:any;
-
-	constructor(){
-		super();
-		this.state = {
-			naviBarColor:"#AAA"
-		}
-	}
-	componentDidUpdate(){
-		this.navibar.style.backgroundColor = this.state.naviBarColor;
-	}
+export class App<S,T> extends React.Component<Props, {}>{
 	makeUnitArray():JSX.Element[]{
 		const { unit,activateUnit,activeUnit } = this.props;
 
@@ -69,22 +60,14 @@ export class App<S,T> extends React.Component<Props, State>{
 		})
 	}
 	render(){
-		const { addUnit,deleteUnit,activateUnit,activeUnit } = this.props;
+		const { addUnit,deleteUnit,activateUnit,
+				activeUnit,changeThemeColor,themeColor } = this.props;
 
 		return (<div className="divAppWrapper">
-					<div className="divNavibar" ref={(elem)=>{
-						this.navibar = elem;
-					}}>
-						<input onChange={(event:any)=>{
-								this.setState({
-									naviBarColor:event.target.value
-								});
-						}} />
-					</div>
+					<Navibar themeColor={themeColor} />
 					<div className="divAppArea">
-						<SideBar addUnit={addUnit} deleteUnit={()=>{
-							deleteUnit(activeUnit);
-						}}/>
+						<SideBar addUnit={addUnit} changeThemeColor={changeThemeColor}
+								 deleteUnit={()=>{ deleteUnit(activeUnit); }}  />
 						<div>
 							{
 								this.makeUnitArray()

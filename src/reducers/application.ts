@@ -20,6 +20,12 @@ const application = (state = initialState, action)=>{
     		tempState.activeUnit = action.payload.id;
 
     		return tempState;
+        case Types.CHANGE_THEME_COLOR:
+            // objectをdeep copyする(値が同じだが違うobjectを作成する)
+            tempState = immutable.fromJS(state).toJS();
+            tempState.themeColor = action.payload.themeColor;
+
+            return tempState;
     	default:
     		return state;
     }
