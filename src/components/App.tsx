@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+const HTML5Backend = require('react-dnd-html5-backend');
+const DragDropContext = require('react-dnd').DragDropContext;
 
 import {
 	addUnit,
@@ -78,4 +80,4 @@ export class App<S,T> extends React.Component<Props, {}>{
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(App));
