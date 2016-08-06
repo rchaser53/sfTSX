@@ -13,7 +13,6 @@
   "declarationDif":"testA",
   "compileOnSave":false,
   "files": [
-    "typings/browser.d.ts",
-    "typings/bundle.d.ts"
+    "typings/index.d.ts"
   ]
 }
