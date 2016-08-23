@@ -6,7 +6,8 @@ const DragDropContext = require('react-dnd').DragDropContext;
 
 import {
 	addUnit,
-	deleteUnit
+	deleteUnit,
+	moveUnit
 } from '../actions/unit';
 
 import {
@@ -17,6 +18,7 @@ import {
 import SideBar from './SideBar';
 import Unit from './Unit';
 import Navibar from './Navibar';
+import DropArea from './DropArea';
 
 const mapStateToProps = (state)=>{
 	return {
@@ -33,7 +35,8 @@ const mapDispatchToProps = (dispatch)=>{
 		addUnit,
 		deleteUnit,
 		activateUnit,
-		changeThemeColor
+		changeThemeColor,
+		moveUnit
 	},dispatch);
 }
 
@@ -41,23 +44,29 @@ interface Props{
 	unit:{[key:string]:{
 		id:string;
 		text:string;
+		left:number;
+		top:number;
 	}};
 	activeUnit:string;
 	themeColor:string;
-	addUnit:Function;
-	activateUnit:Function;
-	deleteUnit:Function;
+	addUnit:action;
+	activateUnit:action;
+	deleteUnit:action;
+	moveUnit:action;
 	changeThemeColor:(x:string)=>void;
 }
 
 export class App<S,T> extends React.Component<Props, {}>{
 	makeUnitArray():JSX.Element[]{
-		const { unit,activateUnit,activeUnit } = this.props;
+		const { unit,activateUnit,activeUnit,moveUnit } = this.props;
 
 		return Object.keys(unit).map((key)=>{
-			const {id,text} = unit[key];
+			const {id,text,left,top} = unit[key];
 
-			return (<Unit 	key={id} text={text} isActive={id===activeUnit}
+			return (<Unit 	key={id} text={text} isActive={id===activeUnit} 
+							moveUnit={(left:number,top:number)=>{
+								moveUnit(id,left,top);
+							}} left={left} top={top}
 							activateUnit={()=>{ activateUnit(id); }} />);
 		})
 	}
@@ -70,11 +79,10 @@ export class App<S,T> extends React.Component<Props, {}>{
 					<div className="divAppArea">
 						<SideBar addUnit={addUnit} changeThemeColor={changeThemeColor}
 								 deleteUnit={()=>{ deleteUnit(activeUnit); }}  />
-						<div>
-							{
-								this.makeUnitArray()
-							}
-						</div>
+						
+						<DropArea>
+							{ this.makeUnitArray() }
+						</DropArea>
 					</div>
 				</div>);
 	}
