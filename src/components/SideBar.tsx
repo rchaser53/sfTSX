@@ -6,12 +6,16 @@ interface State{
 }
 
 interface Props{
-	addUnit:Function;
-	deleteUnit:Function;
+	targetId:string;
+	addUnit:(x:string)=>any;
+	deleteUnit:(x:string)=>any;
 	changeThemeColor:(x:string)=>void;
 }
 
 export class SideBar<S,T> extends React.Component<Props, State>{
+	context:{dispatch:(x)=>any}
+    static contextTypes = {dispatch: React.PropTypes.any}
+
 	constructor(){
 		super();
 		// classの持つ状態。class内でしか使わず、class外に値を渡さないこと
@@ -19,14 +23,20 @@ export class SideBar<S,T> extends React.Component<Props, State>{
 			condition:null
 		}
 	}
+
 	render(){
 		const {
 			condition
 		} = this.state;
 
 		const {
-			addUnit,deleteUnit,changeThemeColor
+			addUnit,deleteUnit,
+			changeThemeColor,targetId
 		} = this.props;
+
+		const {
+			dispatch
+		} = this.context
 
 		return (<div className="sideBarOuter">
 					<div>
@@ -41,7 +51,16 @@ export class SideBar<S,T> extends React.Component<Props, State>{
 								<button onClick={()=>{
 									addUnit(condition);
 								}}>add</button>
-								<button onClick={deleteUnit}>delete</button>
+								<button onClick={()=>{
+									deleteUnit(targetId);
+								}}>delete</button>
+
+								<button onClick={()=>{
+									dispatch({type:"@@redux-undo/UNDO"})
+								}}>UNDO</button>
+								<button onClick={()=>{
+									dispatch({type:"@@redux-undo/REDO"})
+								}}>REDO</button>
 							</div>
 
 							<div>
