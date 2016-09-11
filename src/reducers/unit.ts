@@ -15,7 +15,7 @@ const unit = (state = initialState, action) =>{
             text = action.payload.text;
 
     		tempState[id] = {
-                id,text,left:0,top:0
+                id,text:text || id,left:0,top:Object.keys(state).length * 60
             };
     		return tempState;
         case UnitTypes.DELETE_UNIT:
