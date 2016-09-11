@@ -22,22 +22,10 @@ import DropArea from './DropArea';
 
 const mapStateToProps = (state)=>{
 	return {
-		unit : state.unit,
+		unit : state.unit.present,
 		activeUnit : state.application.activeUnit,
 		themeColor: state.application.themeColor
 	};
-}
-
-//　keyとvalueが同じ場合valueが省略できる
-// {addUnit}　と {addUnit:addUnit}意味
-const mapDispatchToProps = (dispatch)=>{
-	return bindActionCreators({
-		addUnit,
-		deleteUnit,
-		activateUnit,
-		changeThemeColor,
-		moveUnit
-	},dispatch);
 }
 
 interface Props{
@@ -49,37 +37,60 @@ interface Props{
 	}};
 	activeUnit:string;
 	themeColor:string;
-	addUnit:action;
-	activateUnit:action;
-	deleteUnit:action;
-	moveUnit:action;
-	changeThemeColor:(x:string)=>void;
+	dispatch:(...x)=>any;
 }
 
 export class App<S,T> extends React.Component<Props, {}>{
-	makeUnitArray():JSX.Element[]{
-		const { unit,activateUnit,activeUnit,moveUnit } = this.props;
+	static childContextTypes = {
+		dispatch: React.PropTypes.any,
+	}
 
-		return Object.keys(unit).map((key)=>{
+	getChildContext(){
+		return {
+			dispatch:this.props.dispatch
+		};
+	}
+
+	constructor(){
+		super();
+		this.addUnit = this.addUnit.bind(this);
+		this.deleteUnit = this.deleteUnit.bind(this);
+		this.changeThemeColor = this.changeThemeColor.bind(this);
+	}
+
+	addUnit(condition:string):void {
+		this.props.dispatch(addUnit(condition));
+	}
+
+	deleteUnit(id:string):void{
+		this.props.dispatch(deleteUnit(id));
+	}
+
+	changeThemeColor(color:string):void{
+		this.props.dispatch(changeThemeColor(color));
+	}
+
+	makeUnitArray():JSX.Element[]{
+		const { unit,dispatch,activeUnit } = this.props;
+
+		return Object.keys(unit).map((key,index)=>{
 			const {id,text,left,top} = unit[key];
 
-			return (<Unit 	key={id} text={text} isActive={id===activeUnit} 
+			return (<Unit 	key={id || `tempId${index}`} text={text} isActive={id===activeUnit} 
 							moveUnit={(left:number,top:number)=>{
-								moveUnit(id,left,top);
+								dispatch(moveUnit(id,left,top));
 							}} left={left} top={top}
-							activateUnit={()=>{ activateUnit(id); }} />);
+							activateUnit={()=>{ dispatch(activateUnit(id)); }} />);
 		})
 	}
 	render(){
-		const { addUnit,deleteUnit,activateUnit,
-				activeUnit,changeThemeColor,themeColor } = this.props;
+		const { activeUnit,themeColor } = this.props;
 
 		return (<div className="divAppWrapper">
 					<Navibar themeColor={themeColor} />
 					<div className="divAppArea">
-						<SideBar addUnit={addUnit} changeThemeColor={changeThemeColor}
-								 deleteUnit={()=>{ deleteUnit(activeUnit); }}  />
-						
+						<SideBar addUnit={this.addUnit} targetId={activeUnit}
+						 	changeThemeColor={this.changeThemeColor} deleteUnit={this.deleteUnit} />
 						<DropArea>
 							{ this.makeUnitArray() }
 						</DropArea>
@@ -87,5 +98,4 @@ export class App<S,T> extends React.Component<Props, {}>{
 				</div>);
 	}
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(App));
+export default connect(mapStateToProps)(DragDropContext(HTML5Backend)(App));
