@@ -6,9 +6,6 @@ interface Props{
 
 export class Navibar<S,T> extends React.Component<Props, {}>{
 	navibar:HTMLDivElement;
-	constructor(){
-		super();
-	}
 	componentDidUpdate(){
 		this.navibar.style.backgroundColor = this.props.themeColor;
 	}
