@@ -4,10 +4,8 @@ import App from './components/App';
 import configureStore from './store/configureStore';
 const ReactDom = require('react-dom');
 
-import rootReducer from './reducers/reducers';
-
 /** studioのstateを管理するstore */
-const store = configureStore(rootReducer,{});
+const store = configureStore();
 
 ReactDom.render(
     <Provider store={store}>
