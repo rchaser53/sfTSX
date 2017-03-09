@@ -35,7 +35,7 @@
     "react-dnd-html5-backend": "^2.1.2",
     "react-widgets": "^3.4.3",
     "ts-loader": "0.8.2",
-    "typescript": "^1.8.0",
+    "typescript": "^2.2.1",
     "webpack": "1.13.0",
     "webpack-dev-middleware": "1.6.1",
     "webpack-dev-server": "1.14.1",
